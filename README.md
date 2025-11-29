@@ -17,14 +17,6 @@ docker build -t payment-schedule .
 docker run --rm -p 8000:8000 payment-schedule
 ```
 
-## Міграції та тести
-
-Всередині контейнера виконайте:
-```bash
-python manage.py migrate
-python manage.py test
-```
-
 ## Використання API
 
 ### Створити графік платежів

@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from .models import Loan
-from .serializers import get_period_length, quantize_money
+from .services import get_period_length, quantize_money
 
 
 class LoanScheduleAPITest(TestCase):
