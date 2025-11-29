@@ -6,10 +6,9 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 
 from .models import Loan, Payment
-from .serializers import (
-    LoanCreateSerializer,
-    PaymentAdjustmentSerializer,
-    PaymentSerializer,
+from .serializers import LoanCreateSerializer, PaymentAdjustmentSerializer, PaymentSerializer
+from .services import (
+    adjust_payment,
     get_period_length,
     next_due_date,
     quantize_money,
@@ -101,7 +100,7 @@ class PaymentAdjustmentView(generics.GenericAPIView):
         payment = self.get_payment(loan_id, sequence)
         serializer = self.get_serializer(data=request.data, context={"payment": payment})
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        adjust_payment(payment, serializer.validated_data["reduction"])
         schedule = PaymentSerializer(payment.loan.payments.all(), many=True)
         return Response(
             {"loan_id": payment.loan_id, "schedule": schedule.data},
